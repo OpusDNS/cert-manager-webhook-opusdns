@@ -1,0 +1,7 @@
+{
+  "apiKeySecretRef": {
+    "name": "opusdns-secret",
+    "key": "api-key"
+  },
+  "ttl": 120
+}

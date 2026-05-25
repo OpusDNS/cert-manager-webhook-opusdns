@@ -1,0 +1,19 @@
+The cert-manager-webhook-opusdns has been installed.
+
+To use it, create an Issuer or ClusterIssuer with the following webhook configuration:
+
+    solvers:
+      - dns01:
+          webhook:
+            groupName: {{ .Values.groupName }}
+            solverName: opusdns
+            config:
+              apiKeySecretRef:
+                name: opusdns-secret
+                key: api-key
+
+Make sure to create a secret with your OpusDNS API key:
+
+    kubectl create secret generic opusdns-secret \
+      --namespace={{ .Release.Namespace }} \
+      --from-literal=api-key=opk_YOUR_API_KEY

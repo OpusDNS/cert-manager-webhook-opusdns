@@ -1,0 +1,72 @@
+# The kubernetes api group under which the webhook will be exposed.
+groupName: acme.opusdns.com
+
+certManager:
+  namespace: cert-manager
+  serviceAccountName: cert-manager
+
+image:
+  registry: ghcr.io
+  repository: opusdns/cert-manager-webhook-opusdns
+  tag: ""  # Defaults to appVersion
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 443
+
+# Secret names that the webhook is allowed to read
+secretName:
+  - opusdns-secret
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+topologySpreadConstraints: []
+  # - maxSkew: 1
+  #   topologyKey: kubernetes.io/hostname
+  #   whenUnsatisfiable: DoNotSchedule
+  #   labelSelector:
+  #     matchLabels:
+  #       app: cert-manager-webhook-opusdns
+
+# Pod Disruption Budget (enable when replicaCount > 1)
+podDisruptionBudget:
+  enabled: false
+  # minAvailable: 1
+  # maxUnavailable: 1
+
+# Proxy settings (optional)
+# http_proxy: "http://proxy:8080"
+# https_proxy: "https://proxy:8080"
+# no_proxy: 127.0.0.1,localhost
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  readOnlyRootFilesystem: true
+
+podSecurityContext:
+  runAsGroup: 1000
+  runAsUser: 1000
+  runAsNonRoot: true
+  fsGroup: 1000
+
+priorityClassName: ""

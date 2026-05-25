@@ -1,0 +1,11 @@
+# Copy this file to tilt-settings.yaml and configure for your environment
+# Usage: tilt up
+
+# Kubernetes namespace for deployment (default: cert-manager)
+namespace: cert-manager
+
+# Container registry (leave empty for local-only builds with kind/k3d)
+# registry: ghcr.io/your-username
+
+# OpusDNS API key for testing (optional - can also create secret manually)
+# api_key: opk_your_api_key_here

@@ -1,0 +1,63 @@
+# Example ClusterIssuer for testing with Let's Encrypt staging
+# Replace with your email and domain
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging-opusdns
+spec:
+  acme:
+    # Use staging for testing
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    # Your email for certificate notifications
+    email: your-email@example.com
+    privateKeySecretRef:
+      name: letsencrypt-staging-account-key
+    solvers:
+      - dns01:
+          webhook:
+            groupName: acme.opusdns.com
+            solverName: opusdns
+            config:
+              apiKeySecretRef:
+                name: opusdns-secret
+                key: api-key
+              # Optional: override TTL (default: 60)
+              # ttl: 120
+              # Optional: specify zone if auto-detection doesn't work
+              # zoneName: example.com
+---
+# Example ClusterIssuer for production
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod-opusdns
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: your-email@example.com
+    privateKeySecretRef:
+      name: letsencrypt-prod-account-key
+    solvers:
+      - dns01:
+          webhook:
+            groupName: acme.opusdns.com
+            solverName: opusdns
+            config:
+              apiKeySecretRef:
+                name: opusdns-secret
+                key: api-key
+---
+# Example Certificate request
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: example-cert
+  namespace: default
+spec:
+  secretName: example-cert-tls
+  issuerRef:
+    name: letsencrypt-staging-opusdns
+    kind: ClusterIssuer
+  dnsNames:
+    - "example.com"
+    - "*.example.com"
