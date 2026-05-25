@@ -90,7 +90,7 @@ func (s *opusDNSSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 		Name:  recordName,
 		Type:  models.RRSetTypeTXT,
 		TTL:   ttl,
-		RData: ch.Key,
+		RData: quoteTXTRData(ch.Key),
 	})
 	if err != nil {
 		return fmt.Errorf("failed to create TXT record %s in zone %s: %w", recordName, zoneName, err)
@@ -127,7 +127,7 @@ func (s *opusDNSSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 		Name:  recordName,
 		Type:  models.RRSetTypeTXT,
 		TTL:   ttl,
-		RData: ch.Key,
+		RData: quoteTXTRData(ch.Key),
 	})
 	if err != nil {
 		return fmt.Errorf("failed to delete TXT record %s in zone %s: %w", recordName, zoneName, err)
@@ -259,6 +259,17 @@ func effectiveTTL(ttl int) int {
 		return defaultTTL
 	}
 	return ttl
+}
+
+// quoteTXTRData wraps a TXT record value in double quotes if not already
+// quoted. The OpusDNS API (and PowerDNS) store TXT rdata in quoted form
+// (e.g. "123d=="). Sending the value pre-quoted ensures that both UPSERT
+// and REMOVE comparisons on the server side find an exact match.
+func quoteTXTRData(value string) string {
+	if strings.HasPrefix(value, `"`) && strings.HasSuffix(value, `"`) {
+		return value
+	}
+	return `"` + value + `"`
 }
 
 // loadConfig decodes the solver configuration.
