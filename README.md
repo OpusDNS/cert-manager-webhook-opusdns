@@ -121,3 +121,7 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for development setup, testing, and release
 - Documentation: https://developers.opusdns.com
 - Issues: [GitHub Issues](https://github.com/OpusDNS/cert-manager-webhook-opusdns/issues)
 - Email: support@opusdns.com
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
