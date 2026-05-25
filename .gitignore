@@ -1,9 +1,8 @@
 # Binaries
 webhook
 /cert-manager-webhook-opusdns
-_test/
 _out/
-kubebuilder/
+bin/
 
 # IDE
 .idea/
