@@ -29,22 +29,16 @@ build:
 	CGO_ENABLED=0 $(GO) build -o webhook -ldflags '-w -extldflags "-static"' .
 
 .PHONY: test
-test: setup-envtest
-	TEST_ASSET_ETCD=$(LOCALBIN)/k8s/$(ENVTEST_K8S_VERSION)-$(OS)-$(ARCH)/etcd \
-	TEST_ASSET_KUBE_APISERVER=$(LOCALBIN)/k8s/$(ENVTEST_K8S_VERSION)-$(OS)-$(ARCH)/kube-apiserver \
-	TEST_ASSET_KUBECTL=$(LOCALBIN)/k8s/$(ENVTEST_K8S_VERSION)-$(OS)-$(ARCH)/kubectl \
+test: envtest
+	@echo "Setting up envtest binaries for Kubernetes $(ENVTEST_K8S_VERSION)..."
+	@KUBEBUILDER_ASSETS="$$("$(ENVTEST)" use $(ENVTEST_K8S_VERSION) --bin-dir "$(LOCALBIN)" -p path)"; \
+	TEST_ASSET_ETCD="$$KUBEBUILDER_ASSETS/etcd" \
+	TEST_ASSET_KUBE_APISERVER="$$KUBEBUILDER_ASSETS/kube-apiserver" \
+	TEST_ASSET_KUBECTL="$$KUBEBUILDER_ASSETS/kubectl" \
 	$(GO) test -v -race .
 
 .PHONY: verify
 verify: lint test
-
-.PHONY: setup-envtest
-setup-envtest: envtest
-	@echo "Setting up envtest binaries for Kubernetes $(ENVTEST_K8S_VERSION)..."
-	@"$(ENVTEST)" use $(ENVTEST_K8S_VERSION) --bin-dir "$(LOCALBIN)" -p path || { \
-		echo "Error: Failed to set up envtest binaries."; \
-		exit 1; \
-	}
 
 .PHONY: envtest
 envtest: $(ENVTEST)
