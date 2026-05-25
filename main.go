@@ -223,14 +223,16 @@ func (s *opusDNSSolver) findZone(ctx context.Context, client *opusdns.Client, fq
 		return "", fmt.Errorf("failed to list zones: %w", err)
 	}
 
-	// Find the longest matching zone (most specific match first)
+	// Find the longest matching zone (most specific match first).
+	// Zone names from the API include a trailing dot (e.g. "example.com."),
+	// so we normalize before comparing.
 	parts := strings.Split(fqdn, ".")
 	for i := 0; i < len(parts)-1; i++ {
 		candidate := strings.Join(parts[i:], ".")
 		for _, zone := range zones {
-			if zone.Name == candidate {
+			if strings.TrimSuffix(zone.Name, ".") == candidate {
 				klog.V(4).Infof("Found matching zone: %s for fqdn: %s", zone.Name, fqdn)
-				return zone.Name, nil
+				return candidate, nil
 			}
 		}
 	}
