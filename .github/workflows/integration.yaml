@@ -47,4 +47,5 @@ jobs:
       - name: Run integration tests
         env:
           TEST_ZONE_NAME: "cert-manager-test.opusdns.dev."
+          TEST_DNS_SERVER: "ns1.opusdns.dev:53"
         run: make test

@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	zone = os.Getenv("TEST_ZONE_NAME")
-	fqdn string
+	zone      = os.Getenv("TEST_ZONE_NAME")
+	dnsServer = os.Getenv("TEST_DNS_SERVER")
+	fqdn      string
 )
 
 func TestRunsSuite(t *testing.T) {
@@ -21,12 +22,18 @@ func TestRunsSuite(t *testing.T) {
 
 	fqdn = randomString(20) + "." + zone
 
-	fixture := acmetest.NewFixture(&opusDNSSolver{},
+	opts := []acmetest.Option{
 		acmetest.SetResolvedZone(zone),
 		acmetest.SetResolvedFQDN(fqdn),
 		acmetest.SetAllowAmbientCredentials(false),
 		acmetest.SetManifestPath("testdata/opusdns"),
-	)
+	}
+
+	if dnsServer != "" {
+		opts = append(opts, acmetest.SetDNSServer(dnsServer))
+	}
+
+	fixture := acmetest.NewFixture(&opusDNSSolver{}, opts...)
 
 	fixture.RunBasic(t)
 	fixture.RunExtended(t)
