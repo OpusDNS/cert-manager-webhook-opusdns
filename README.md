@@ -112,10 +112,6 @@ spec:
 | `ttl` | TTL for TXT records | No (default: `60`) |
 | `apiEndpoint` | Custom API endpoint | No |
 
-## Contributing
-
-See [DEVELOPMENT.md](DEVELOPMENT.md) for development setup, testing, and release instructions.
-
 ## Support
 
 - Documentation: https://developers.opusdns.com
