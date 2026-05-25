@@ -112,12 +112,12 @@ spec:
 | `ttl` | TTL for TXT records | No (default: `60`) |
 | `apiEndpoint` | Custom API endpoint | No |
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
 ## Support
 
 - Documentation: https://developers.opusdns.com
 - Issues: [GitHub Issues](https://github.com/OpusDNS/cert-manager-webhook-opusdns/issues)
 - Email: support@opusdns.com
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
