@@ -6,7 +6,7 @@ toolchain go1.26.3
 
 require (
 	github.com/cert-manager/cert-manager v1.20.2
-	github.com/opusdns/opusdns-go-client v1.0.10
+	github.com/opusdns/opusdns-go-client v1.3.0
 	k8s.io/api v0.35.4
 	k8s.io/apiextensions-apiserver v0.35.4
 	k8s.io/apimachinery v0.35.4
