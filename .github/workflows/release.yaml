@@ -8,7 +8,7 @@ on:
 jobs:
   docker:
     name: Build & Push Docker Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write
       packages: write
@@ -45,7 +45,7 @@ jobs:
 
   helm:
     name: Package & Publish Helm Chart
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write
       pages: write

@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v7
 
@@ -23,7 +23,7 @@ jobs:
           version: latest
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v7
 
@@ -39,7 +39,7 @@ jobs:
         run: go vet ./...
 
   helm-lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v7
 
@@ -50,7 +50,7 @@ jobs:
         run: helm lint deploy/cert-manager-webhook-opusdns
 
   docker:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [lint, build, helm-lint]
     steps:
       - uses: actions/checkout@v7
